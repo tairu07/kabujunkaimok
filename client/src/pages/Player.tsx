@@ -272,7 +272,7 @@ export default function Player() {
         <div className="container max-w-7xl">
           <div className="relative">
             <div ref={chartContainerRef} className="mb-4 rounded-lg overflow-hidden border border-border" />
-            <div className="absolute top-4 right-4">
+            <div className="absolute top-4 right-4 z-10 pointer-events-auto">
               <Button
                 variant={isFavorite ? "default" : "outline"}
                 size="lg"
