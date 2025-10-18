@@ -11,6 +11,7 @@ import {
   Pause,
   Play,
   Settings,
+  Star,
   Volume2,
   VolumeX,
 } from "lucide-react";
@@ -74,6 +75,7 @@ export default function Player() {
   const [sma2Period, setSma2Period] = useState(25);
   const [sma3Period, setSma3Period] = useState(75);
   const [logScale, setLogScale] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const currentStock = mockStocks[currentIndex];
 
@@ -236,9 +238,25 @@ export default function Player() {
               </Button>
             </Link>
             <div>
-              <h1 className="text-xl font-bold">
-                {currentStock.code} - {currentStock.name}
-              </h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-bold">
+                  {currentStock.code} - {currentStock.name}
+                </h1>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsFavorite(!isFavorite)}
+                  className="h-8 w-8 transition-all hover:scale-110"
+                >
+                  <Star
+                    className={`h-5 w-5 transition-all ${
+                      isFavorite
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "text-muted-foreground hover:text-yellow-400"
+                    }`}
+                  />
+                </Button>
+              </div>
               <p className="text-sm text-muted-foreground">
                 {currentStock.market} / {currentStock.industry}
               </p>
