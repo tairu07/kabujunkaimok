@@ -79,6 +79,32 @@ export default function Player() {
 
   const currentStock = mockStocks[currentIndex];
 
+  // ローカルストレージからお気に入り状態を読み込み
+  useEffect(() => {
+    try {
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+      setIsFavorite(favorites.includes(currentStock.code));
+    } catch (error) {
+      console.error("Failed to load favorites:", error);
+    }
+  }, [currentStock.code]);
+
+  // お気に入り状態をローカルストレージに保存
+  useEffect(() => {
+    try {
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+      if (isFavorite && !favorites.includes(currentStock.code)) {
+        favorites.push(currentStock.code);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+      } else if (!isFavorite && favorites.includes(currentStock.code)) {
+        const updated = favorites.filter((code: string) => code !== currentStock.code);
+        localStorage.setItem("favorites", JSON.stringify(updated));
+      }
+    } catch (error) {
+      console.error("Failed to save favorites:", error);
+    }
+  }, [isFavorite, currentStock.code]);
+
   useEffect(() => {
     if (!chartContainerRef.current) return;
 
@@ -229,7 +255,7 @@ export default function Player() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="border-b border-border">
+      <header className="border-b border-border bg-background/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/">
@@ -237,6 +263,14 @@ export default function Player() {
                 <Home className="w-4 h-4" />
               </Button>
             </Link>
+            <nav className="flex items-center gap-4">
+              <Link href="/favorites">
+                <a className="text-sm hover:text-yellow-500 transition-colors">お気に入り</a>
+              </Link>
+              <Link href="/mypage">
+                <a className="text-sm hover:text-yellow-500 transition-colors">マイページ</a>
+              </Link>
+            </nav>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl font-bold">
