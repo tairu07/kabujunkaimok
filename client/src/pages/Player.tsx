@@ -270,7 +270,24 @@ export default function Player() {
 
       <main className="flex-1 p-4">
         <div className="container max-w-7xl">
-          <div ref={chartContainerRef} className="mb-4 rounded-lg overflow-hidden border border-border" />
+          <div className="relative">
+            <div ref={chartContainerRef} className="mb-4 rounded-lg overflow-hidden border border-border" />
+            <div className="absolute top-4 right-4">
+              <Button
+                variant={isFavorite ? "default" : "outline"}
+                size="lg"
+                onClick={() => setIsFavorite(!isFavorite)}
+                className={`transition-all ${
+                  isFavorite
+                    ? "bg-yellow-500 hover:bg-yellow-600 text-black"
+                    : "border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
+                }`}
+              >
+                <Star className={`w-5 h-5 mr-2 ${isFavorite ? "fill-current" : ""}`} />
+                {isFavorite ? "お気に入り済み" : "お気に入りに追加"}
+              </Button>
+            </div>
+          </div>
 
           <div className="flex items-center justify-center gap-4 mb-6">
             <Button variant="outline" size="icon" onClick={handlePrevious}>
